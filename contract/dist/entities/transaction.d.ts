@@ -1,0 +1,46 @@
+import z from "zod";
+declare const transactionSchema: z.ZodObject<{
+    id: z.ZodString;
+    createdAt: z.ZodString;
+    updatedAt: z.ZodString;
+    description: z.ZodString;
+    descriptionRaw: z.ZodString;
+    currencyCode: z.ZodEnum<["BRL", "US"]>;
+    amount: z.ZodNumber;
+    category: z.ZodString;
+    categoryId: z.ZodString;
+    accountId: z.ZodString;
+    status: z.ZodString;
+    type: z.ZodEnum<["DEBIT", "CREDIT"]>;
+    operationType: z.ZodEnum<["PIX", "DEBIT", "CREDIT"]>;
+}, "strip", z.ZodTypeAny, {
+    id: string;
+    createdAt: string;
+    updatedAt: string;
+    description: string;
+    descriptionRaw: string;
+    currencyCode: "BRL" | "US";
+    status: string;
+    type: "DEBIT" | "CREDIT";
+    amount: number;
+    category: string;
+    categoryId: string;
+    accountId: string;
+    operationType: "DEBIT" | "CREDIT" | "PIX";
+}, {
+    id: string;
+    createdAt: string;
+    updatedAt: string;
+    description: string;
+    descriptionRaw: string;
+    currencyCode: "BRL" | "US";
+    status: string;
+    type: "DEBIT" | "CREDIT";
+    amount: number;
+    category: string;
+    categoryId: string;
+    accountId: string;
+    operationType: "DEBIT" | "CREDIT" | "PIX";
+}>;
+type transactionType = z.infer<typeof transactionSchema>;
+export { transactionSchema, type transactionType };
