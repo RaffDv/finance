@@ -11,6 +11,7 @@ var successSchema = zod_1.z.object({
     message: zod_1.z.string(),
     data: zod_1.z.any().optional(),
 });
+var successNoRespSchema = zod_1.z.object({});
 var badRequestSchema = zod_1.z.object({
     message: zod_1.z.string(),
     code: zod_1.z.string(),
@@ -42,7 +43,19 @@ exports.contract = c.router({
             description: "fetch month expanses from specific month (retrive from own DB)",
         },
     },
-    user: {},
+    user: {
+        getUserProfile: {
+            method: "GET",
+            pathParams: zod_1.z.object({
+                id: zod_1.z.string(),
+            }),
+            path: "/user/:id",
+            responses: {
+                200: successSchema,
+                404: badRequestSchema,
+            },
+        },
+    },
     auth: {
         register: {
             method: "POST",
@@ -65,6 +78,14 @@ exports.contract = c.router({
                 400: badRequestSchema,
                 401: badRequestSchema,
                 500: badRequestSchema,
+            },
+        },
+        refresh: {
+            method: "POST",
+            path: "/refresh",
+            body: zod_1.z.object({}),
+            responses: {
+                200: successSchema,
             },
         },
     },

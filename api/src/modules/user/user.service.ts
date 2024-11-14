@@ -52,10 +52,35 @@ export class UserService {
     }
   }
   async findOne(username: string) {
-    return await this.prisma.user.findUnique({
-      where: {
-        username,
-      },
-    });
+    try {
+      const user = await this.prisma.user.findUnique({
+        where: { username },
+      });
+
+      if (!user)
+        throw new BadRequestException('U0003 - User not found', {
+          cause: 'username provided not exists',
+        });
+
+      return user;
+    } catch (err) {
+      return err;
+    }
+  }
+  async getUserProfile(id: string) {
+    try {
+      const user = await this.prisma.user.findUnique({
+        where: { id },
+      });
+
+      if (!user)
+        throw new BadRequestException('U0003 - User not found', {
+          cause: 'username provided not exists',
+        });
+
+      return user;
+    } catch (err) {
+      return err;
+    }
   }
 }

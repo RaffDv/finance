@@ -16,6 +16,7 @@ export declare const contract: {
             };
         };
         findAll: {
+            description: "fetch month expanses from specific month (retrive from own DB)";
             pathParams: z.ZodObject<{
                 month: z.ZodEffects<z.ZodString, string, string>;
             }, "strip", z.ZodTypeAny, {
@@ -23,7 +24,6 @@ export declare const contract: {
             }, {
                 month: string;
             }>;
-            description: "fetch month expanses from specific month (retrive from own DB)";
             method: "GET";
             path: "/api/v1/expanse/:month";
             responses: {
@@ -44,28 +44,28 @@ export declare const contract: {
                         type: z.ZodEnum<["DEBIT", "CREDIT"]>;
                         operationType: z.ZodEnum<["PIX", "DEBIT", "CREDIT"]>;
                     }, "strip", z.ZodTypeAny, {
-                        description: string;
-                        type: "DEBIT" | "CREDIT";
-                        status: string;
                         id: string;
                         createdAt: string;
                         updatedAt: string;
+                        description: string;
                         descriptionRaw: string;
                         currencyCode: "BRL" | "US";
+                        status: string;
+                        type: "DEBIT" | "CREDIT";
                         amount: number;
                         category: string;
                         categoryId: string;
                         accountId: string;
                         operationType: "DEBIT" | "CREDIT" | "PIX";
                     }, {
-                        description: string;
-                        type: "DEBIT" | "CREDIT";
-                        status: string;
                         id: string;
                         createdAt: string;
                         updatedAt: string;
+                        description: string;
                         descriptionRaw: string;
                         currencyCode: "BRL" | "US";
+                        status: string;
+                        type: "DEBIT" | "CREDIT";
                         amount: number;
                         category: string;
                         categoryId: string;
@@ -75,14 +75,14 @@ export declare const contract: {
                 }, "strip", z.ZodTypeAny, {
                     message: string;
                     data: {
-                        description: string;
-                        type: "DEBIT" | "CREDIT";
-                        status: string;
                         id: string;
                         createdAt: string;
                         updatedAt: string;
+                        description: string;
                         descriptionRaw: string;
                         currencyCode: "BRL" | "US";
+                        status: string;
+                        type: "DEBIT" | "CREDIT";
                         amount: number;
                         category: string;
                         categoryId: string;
@@ -92,14 +92,14 @@ export declare const contract: {
                 }, {
                     message: string;
                     data: {
-                        description: string;
-                        type: "DEBIT" | "CREDIT";
-                        status: string;
                         id: string;
                         createdAt: string;
                         updatedAt: string;
+                        description: string;
                         descriptionRaw: string;
                         currencyCode: "BRL" | "US";
+                        status: string;
+                        type: "DEBIT" | "CREDIT";
                         amount: number;
                         category: string;
                         categoryId: string;
@@ -110,7 +110,41 @@ export declare const contract: {
             };
         };
     };
-    user: {};
+    user: {
+        getUserProfile: {
+            pathParams: z.ZodObject<{
+                id: z.ZodString;
+            }, "strip", z.ZodTypeAny, {
+                id: string;
+            }, {
+                id: string;
+            }>;
+            method: "GET";
+            path: "/api/v1/user/:id";
+            responses: {
+                200: z.ZodObject<{
+                    message: z.ZodString;
+                    data: z.ZodOptional<z.ZodAny>;
+                }, "strip", z.ZodTypeAny, {
+                    message: string;
+                    data?: any;
+                }, {
+                    message: string;
+                    data?: any;
+                }>;
+                404: z.ZodObject<{
+                    message: z.ZodString;
+                    code: z.ZodString;
+                }, "strip", z.ZodTypeAny, {
+                    code: string;
+                    message: string;
+                }, {
+                    code: string;
+                    message: string;
+                }>;
+            };
+        };
+    };
     auth: {
         register: {
             description: "register an user on app";
@@ -226,6 +260,23 @@ export declare const contract: {
                 }, {
                     code: string;
                     message: string;
+                }>;
+            };
+        };
+        refresh: {
+            method: "POST";
+            body: z.ZodObject<{}, "strip", z.ZodTypeAny, {}, {}>;
+            path: "/api/v1/refresh";
+            responses: {
+                200: z.ZodObject<{
+                    message: z.ZodString;
+                    data: z.ZodOptional<z.ZodAny>;
+                }, "strip", z.ZodTypeAny, {
+                    message: string;
+                    data?: any;
+                }, {
+                    message: string;
+                    data?: any;
                 }>;
             };
         };

@@ -2,12 +2,15 @@ import {
   ConflictException,
   Controller,
   InternalServerErrorException,
+  Req,
   UnauthorizedException,
+  UseGuards,
 } from '@nestjs/common';
 import { tsRestHandler, TsRestHandler } from '@ts-rest/nest';
 import { contract as c } from '@finance/contract';
 import { AuthService } from './auth.service';
 import { Prisma } from '@prisma/client';
+import { RefreshJwtGuard } from './guard/refreshJwt.guard';
 
 const { auth } = c;
 
@@ -75,6 +78,21 @@ export class AuthController {
         body: {
           message: response.message,
           data: response.data,
+        },
+      };
+    });
+  }
+
+  @UseGuards(RefreshJwtGuard)
+  @TsRestHandler(auth.refresh)
+  refreshToken(@Req() req) {
+    return tsRestHandler(auth.refresh, async () => {
+      const resp = await this.authService.refreshToken(req.user);
+      return {
+        status: 200,
+        body: {
+          message: 'token refreshed',
+          data: resp,
         },
       };
     });

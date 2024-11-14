@@ -5,6 +5,7 @@ declare namespace NodeJS {
     PORT: number;
     ACCOUNT_ID: string;
     ACCESS_URL: string;
-    API_VERSION: string;
+    JWT_ACCESS_SECRET: string;
+    JWT_REFRESH_SECRET: string;
   }
 }

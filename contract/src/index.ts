@@ -10,6 +10,7 @@ const successSchema = z.object({
   message: z.string(),
   data: z.any().optional(),
 });
+const successNoRespSchema = z.object({});
 
 const badRequestSchema = z.object({
   message: z.string(),
@@ -45,7 +46,19 @@ export const contract = c.router(
           "fetch month expanses from specific month (retrive from own DB)",
       },
     },
-    user: {},
+    user: {
+      getUserProfile: {
+        method: "GET",
+        pathParams: z.object({
+          id: z.string(),
+        }),
+        path: "/user/:id",
+        responses: {
+          200: successSchema,
+          404: badRequestSchema,
+        },
+      },
+    },
     auth: {
       register: {
         method: "POST",
@@ -68,6 +81,14 @@ export const contract = c.router(
           400: badRequestSchema,
           401: badRequestSchema,
           500: badRequestSchema,
+        },
+      },
+      refresh: {
+        method: "POST",
+        path: "/refresh",
+        body: z.object({}),
+        responses: {
+          200: successSchema,
         },
       },
     },
