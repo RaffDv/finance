@@ -25,7 +25,7 @@ export class AuthController {
 
       if (response instanceof Prisma.PrismaClientKnownRequestError)
         return {
-          status: 400,
+          status: 404,
           body: {
             code: response.code,
             message: response.message,

@@ -1,14 +1,14 @@
 import {
   Injectable,
-  BadRequestException,
   InternalServerErrorException,
   ConflictException,
+  NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 import { CreateUserDto } from './dto/createUser.dto';
 import { Prisma } from '@prisma/client';
 import { hash } from 'bcrypt';
-
+import { ErrorDictionary } from 'utils/errorDictionary';
 @Injectable()
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
@@ -22,8 +22,8 @@ export class UserService {
       });
 
       if (user)
-        throw new ConflictException('U0002 - user already exists', {
-          cause: 'the chosen username is already in use',
+        throw new ConflictException(ErrorDictionary.Auth.A1000.cause, {
+          cause: ErrorDictionary.Auth.A1000.message,
         });
 
       await this.prisma.user.create({
@@ -39,16 +39,19 @@ export class UserService {
     } catch (err) {
       if (err instanceof Prisma.PrismaClientKnownRequestError)
         return {
-          code: 'U0001 - Data Provided is incorrect',
-          message: `${err.code} -${err.message.split('Unique')[1]}`,
+          code: ErrorDictionary.User.U0001.cause,
+          message: ErrorDictionary.User.U0001.message,
         };
       if (err instanceof ConflictException) {
         return err;
       }
 
-      return new InternalServerErrorException('E1500 - Not tracked error', {
-        cause: 'unknown error',
-      });
+      return new InternalServerErrorException(
+        ErrorDictionary.General.E1500.cause,
+        {
+          cause: ErrorDictionary.General.E1500.message,
+        },
+      );
     }
   }
   async findOne(username: string) {
@@ -58,8 +61,8 @@ export class UserService {
       });
 
       if (!user)
-        throw new BadRequestException('U0003 - User not found', {
-          cause: 'username provided not exists',
+        throw new NotFoundException(ErrorDictionary.User.U0003.cause, {
+          cause: ErrorDictionary.User.U0003.message,
         });
 
       return user;
@@ -74,10 +77,9 @@ export class UserService {
       });
 
       if (!user)
-        throw new BadRequestException('U0003 - User not found', {
-          cause: 'username provided not exists',
+        throw new NotFoundException(ErrorDictionary.User.U0003.cause, {
+          cause: ErrorDictionary.User.U0003.message,
         });
-
       return user;
     } catch (err) {
       return err;

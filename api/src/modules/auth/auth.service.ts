@@ -1,7 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { CreateUserDto } from '../user/dto/createUser.dto';
-import { log } from 'console';
 import { LoginDto } from './dto/auth.dto';
 import { compare } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
@@ -14,13 +13,10 @@ export class AuthService {
 
   async register(dto: CreateUserDto) {
     const resp = await this.userService.crate(dto);
-    log(resp);
     return resp;
   }
 
   async login(dto: LoginDto) {
-    console.log(dto);
-
     const result = await this.validateUser(dto);
 
     if (result instanceof UnauthorizedException) return result;
