@@ -1,4 +1,5 @@
-import { Injectable, UseGuards } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+
 @Injectable()
 export class AppService {
   getHello(): string {
